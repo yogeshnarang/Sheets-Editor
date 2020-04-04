@@ -16,7 +16,7 @@ var data = creatEmptyDataArray(200, 200);
 //     ['2018', 20, 11, 14, 13],
 //     ['2019', 30, 15, 12, 13]
 //   ];
-
+data[0][0]="sam";
 var startRow, startCol, endRow, endCol;
 var container = document.getElementById('example');
 var hot = new Handsontable(container, {
