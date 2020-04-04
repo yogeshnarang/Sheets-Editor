@@ -9,14 +9,14 @@ function creatEmptyDataArray(x, y) {
     return arr;
 }
 
-var data = creatEmptyDataArray(200, 200);
+var data = creatEmptyDataArray(23, 204);
 // var data2 = [
 //     ['', 'Ford', 'Tesla', 'Toyota', 'Honda'],
 //     ['2017', 10, 11, 12, 13],
 //     ['2018', 20, 11, 14, 13],
 //     ['2019', 30, 15, 12, 13]
 //   ];
-data[0][0]="sam";
+
 var startRow, startCol, endRow, endCol;
 var container = document.getElementById('example');
 var hot = new Handsontable(container, {
@@ -36,6 +36,10 @@ var hot = new Handsontable(container, {
     }
 });
 
+// Use 2D Array of Strings to set className formatting
+// Use 2D Array of Strings to set Data in cells
+
+//Make Text bold
 document.querySelector('.bold').addEventListener('click', function () {
     for (var j = 0; j < (endCol - startCol + 1); j++) {
         for (var i = 0; i < (endRow - startRow + 1); i++) {
@@ -102,5 +106,18 @@ document.querySelector('.align_center').addEventListener('click', function () {
             hot.setCellMeta(startRow + i, startCol + j, 'className', hot.getCellMeta(startRow + i, startCol + j).className + ' align_center')
         }
     }
+    hot.render();
+});
+
+
+//Implementing the Save Functionality/button
+document.querySelector('.save').addEventListener('click', function () {
+    data = hot.getData();
+    hot.render();
+    //To Store in Backend use JSON.stringify method on hot.getData() and hot.getCellMeta
+});
+//Implementing the Load Functionality/button
+document.querySelector('.load').addEventListener('click', function () {
+    hot.loadData(data);
     hot.render();
 });
