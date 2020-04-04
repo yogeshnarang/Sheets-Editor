@@ -1,0 +1,163 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color:black;
+}
+
+header {
+    background-color: white;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+
+
+.header_title_row {
+    width: 100%;
+    background-color:#c7e6ff; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 50px;
+
+}
+.header_title_row h3 {
+    background-color:inherit;
+    color: #0d123a;
+    
+}
+
+
+.header_title_row button {
+font-size: 14px; 
+background-color:white;
+padding:0.3em 1.2em;
+margin:0 0.1em 0.1em 0;
+border:0.16em solid rgba(255,255,255,0);
+border-radius:2em;
+box-sizing: border-box;
+text-decoration:none;
+font-family:'Roboto',sans-serif;
+font-weight:300;
+
+color:#4e9af1;
+text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
+text-align:center;
+transition: all 0.2s;
+
+}
+
+.header_title_row button:hover{
+    border-color:#336bac;
+}
+
+.file_menu{
+    background: white;
+}
+.file_menu ul{
+    padding: 5px 50px;
+}
+.file_menu ul li{
+    display: inline;
+    padding: 2px 3px;
+}
+.file_menu ul li button{
+    padding: 2px 4px;
+    font-size: 14px;
+    border: none
+}
+.file_menu ul li button:hover{
+
+    background-color:rgb(224, 224, 224);
+    border-radius: 2px;
+}
+
+.edit_menu ul{
+    padding: 5px 35px;
+}
+.edit_menu ul li{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 2px 30px 2px 15px;
+}
+
+.edit_menu ul li button {
+    border: none;
+
+}
+
+.edit_menu ul li button .material-icons {
+
+    color: gray;
+    font-size: 22px;
+}
+
+.edit_menu ul li button:hover .material-icons  {
+    color: black;
+}
+
+
+
+.handsontable .green {
+    background: #94ddb6;
+    font-weight: bold;
+}
+  
+.handsontable .yellow {
+    background: #e2e549;
+    font-weight: bold;
+}
+
+.handsontable .bold {
+    font-weight: bold;
+}
+  
+.handsontable .italic {
+    font-style: italic;
+}
+
+.handsontable .underline {
+    text-decoration: underline;
+}
+.handsontable .linethrough {
+    text-decoration: line-through;
+}
+
+.handsontable .align_left {
+    text-align: left;
+}
+.handsontable .align_right {
+    text-align: right;
+}
+.handsontable .align_center {
+    text-align: center;
+}
+
+
+
+.handsontable THEAD TH {
+    background: #c7e6ff;
+    border-color:#c7e6ff;
+}
+
+.handsontable TBODY TR TH {
+    background: #c7e6ff;
+    border-color:#c7e6ff;
+}
+
+.handsontable THEAD TH .changeType {
+        /* border-radius: 2px; */
+        border: 1px solid #000;
+        color: #000000;
+        font-size: 9px;
+        line-height: 9px;
+        padding: 2px;
+        margin: 3px 1px 0 5px;
+        float: right;
+        background: #c7e6ff;
+}
