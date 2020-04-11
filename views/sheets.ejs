@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="../public/assets/style.css" rel="stylesheet" type="text/css">
+    </link>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/node_modules/handsontable/dist/handsontable.full.js"></script>
+    <link type="text/css" href="/node_modules/handsontable/dist/handsontable.full.css" rel="stylesheet" media="screen">
+
+
+
+    <title>Sheets-Editor</title>
+
+</head>
+
+
+<body>
+
+    <header>
+        <div class="header_title_row">
+            <h3>MY FIRST SPREADSHEET</h3>
+            <button type="button"> Share </button>
+        </div>
+
+
+        <!-- <div class="file_menu">
+            <ul>
+                <li>
+                    <button type="button">File</button>
+                </li>
+                <li>
+                    <button type="button">View</button></li>
+                <li><button type="button">Edit</button></li>
+                <li><button type="button">Tools</button></li>
+                <li><button type="button">Format</button></li>
+                <li><button type="button">Insert</button></li>
+                <li><button type="button">Help</button></li>
+            </ul>
+        </div> -->
+
+        <div class="file_menu">
+            <ul>
+                <li class="dropdown">
+                    <button class="dropbtn">File
+                    </button>
+                    <div class="dropdown-content">
+                        <button type="button"> Save </button>
+                        <button> Save As </button>
+                        <button> Download </button>
+
+                    </div>
+                </li>
+
+                <li class="dropdown">
+                    <button class="dropbtn">View
+                    </button>
+                    <div class="dropdown-content">
+                        <button> Zoom In </button>
+                        <button> Zoom Out </button>
+                    </div>
+                </li>
+
+                <li class="dropdown">
+                    <button class="dropbtn">Tools
+                    </button>
+                    <div class="dropdown-content">
+                        <button> TBD </button>
+                        <button> TBD </button>
+                    </div>
+                </li>
+
+                <li class="dropdown">
+                    <button class="dropbtn">Edit
+                    </button>
+                    <div class="dropdown-content">
+                        <button> TBD </button>
+                        <button> TBD </button>
+                    </div>
+                </li>
+
+                <li class="dropdown">
+                    <button class="dropbtn">Insert
+                    </button>
+                    <div class="dropdown-content">
+                        <button> TBD </button>
+                        <button> TBD </button>
+                    </div>
+                </li>
+
+                <li class="dropdown">
+                    <button class="dropbtn">Help
+                    </button>
+                    <div class="dropdown-content">
+                        <button> TBD </button>
+                        <button> TBD </button>
+                    </div>
+                </li>
+
+
+            </ul>
+        </div>
+
+        <hr style="width:95%; margin: 0 auto;">
+
+        <div class="edit_menu">
+            <ul>
+                <li>
+                    <button type="button" class="bold">
+                        <i class="material-icons">format_bold</i>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="italic">
+                        <i class="material-icons">format_italic</i>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="linethrough">
+                        <i class="material-icons">format_strikethrough</i>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="underline">
+                        <i class="material-icons">format_underline</i>
+                    </button>
+                </li>
+                <li>
+                    <button type="button">
+                        <i class="material-icons">format_size</i>
+                    </button>
+                </li>
+                <li>
+                    <button type="button">
+                        <i class="material-icons">format_align_justify</i>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="align_left">
+                        <i class="material-icons">format_align_left</i>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="align_right">
+                        <i class="material-icons">format_align_right</i>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="align_center">
+                        <i class="material-icons">format_align_center</i>
+                    </button>
+                </li>
+                <li>
+                    <button type="button">
+                        <i class="material-icons">insert_link</i>
+                    </button>
+                </li>
+                <li>
+                    <button type="button">
+                        <i class="material-icons">insert_comment</i>
+                    </button>
+                </li>
+                <li>
+                    <button type="button">
+                        <i class="material-icons">undo</i>
+
+                    </button>
+                </li>
+                <li>
+                    <button type="button">
+                        <i class="material-icons">redo</i>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="save">
+                        <i class="material-icons">save</i>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="load">
+                        <i class="material-icons">get_app</i>
+                    </button>
+                </li>
+
+
+
+            </ul>
+        </div>
+
+    </header>
+
+    <!-- <div></div> -->
+    <div id="example"></div>
+
+
+
+
+</body>
+<script type="text/javascript" src="../public/js/myscripts.js"></script>
+
+
+</html>
