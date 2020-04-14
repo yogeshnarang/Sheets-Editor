@@ -1,3 +1,14 @@
+//defining doc name
+
+var docName = "Untitled Spreadsheet (Click to Edit) ";
+document.getElementById("doc_name").innerHTML = docName;
+document.querySelector('#doc_name').addEventListener('click', function () {
+   docName = prompt("Please enter name of Document ", "<name goes here>");
+    if (docName!= null) {
+    document.getElementById("doc_name").innerHTML = docName;
+    }
+});
+
 // Defining the function to create empty data
 
 function creatEmptyDataArray(x, y) {
@@ -130,3 +141,4 @@ document.querySelector('.load').addEventListener('click', function () {
     data=dataSaved;
     hot.render();
 });
+
