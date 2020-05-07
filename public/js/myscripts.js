@@ -13,8 +13,7 @@ document.querySelector('#doc_name').addEventListener('click', function () {
 console.log('file loading');
 function creatEmptyDataArray(x, y) {
     var arr = new Array(x);
-    var i;
-    for (i = 0; i < y; i++) {
+    for (var i = 0; i < x; i++) {
         arr[i] = new Array(y);
     }
     return arr;
@@ -30,7 +29,7 @@ var data = creatEmptyDataArray(40, 20);
 //   ];
 var startRow, startCol, endRow, endCol;
 
-var dataSaved=creatEmptyDataArray(20,40);
+var dataSaved = creatEmptyDataArray(40, 20 );
 
 var container = document.getElementById('example');
 var hot = new Handsontable(container, {
@@ -132,7 +131,20 @@ document.querySelector('.save').addEventListener('click', function () {
     dataSaved = hot.getData();
     hot.render();
     //To Store in Backend use JSON.stringify method on hot.getData() and hot.getCellMeta
+
+    var obj = {};
+    obj.data = dataSaved;
+    obj.save_fname = document.getElementById("doc_name").innerHTML;
+    var objS = JSON.stringify(obj);
+    console.log(objS);
+    
+    $.post('/sheets/' + id, {data : objS}, function(data, status){
+        console.log("Hello");
+        console.log(data);
+        window.location.href = "/drive/" + rid;  
+    });
 });
+
 //Implementing the Load Functionality/button
 document.querySelector('.load').addEventListener('click', function () {
     //dataSaved;
