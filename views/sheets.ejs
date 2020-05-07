@@ -13,7 +13,14 @@
 
 
     <title>Sheets-Editor</title>
-
+    <script>
+        var id = '<%- id %>';
+        var rid = '<%- rid %>';
+        var doc = '<%- doc %>';
+        doc = JSON.parse(doc);
+        console.log(id);
+        console.log(doc);
+    </script>
 </head>
 
 
@@ -194,11 +201,34 @@
     <!-- <div></div> -->
     <div id="example"></div>
 
-
+    
 
 
 </body>
 <script type="text/javascript" src="../public/js/myscripts.js"></script>
+<script>
+    if (doc != undefined) {
+        var arr = [];
+        for (var i = 0; i < 40; ++i) {
+            arr[i] = new Array(20);
+        }
+        content = doc.contentCells;
+
+        for (var i = 0; i < content.length; ++i) {
+            var r = content[i].row;
+            var c = content[i].col;
+            arr[r][c] = content[i].value;
+        }
+        console.log(arr);
+        dataSaved = arr;
+
+        console.log("Load");
+        hot.loadData(dataSaved);
+        data = dataSaved;
+        hot.render();
+    }
+
+</script>
 
 
 </html>
