@@ -9,7 +9,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript" src="/node_modules/handsontable/dist/handsontable.full.js"></script>
     <link type="text/css" href="/node_modules/handsontable/dist/handsontable.full.css" rel="stylesheet" media="screen">
-
+    <link href="https://fonts.googleapis.com/icon?family=Roboto|Patua+One|Source+Sans+Pro|Zilla+Slab|Material+Icons|Material+Icons+Round|Material+Icons+Outlined"
+    rel="stylesheet" />
 
 
     <title>Sheets-Editor</title>
@@ -17,6 +18,7 @@
         var id = '<%- id %>';
         var rid = '<%- rid %>';
         var doc = '<%- doc %>';
+        var y = '<%- y %>';
         doc = JSON.parse(doc);
         console.log(id);
         console.log(doc);
@@ -198,6 +200,141 @@
 
     </header>
 
+    <% if(y == 1) { %>
+        
+    <div id="share-selection-pane">
+        <div id="close-button" style="position: absolute; right: 10px; top: 10px; z-index: 12; cursor: pointer;"
+            onclick="hideSelectionPane()">
+            &#x274C
+        </div>
+        <form onload="storeRadioOutput('r')" method="POST" action="/sheets/add/<%= id %>">
+            <!-- <label for="officialName"><b>Name:</b></label>
+            <input
+            type="text"
+            placeholder="Enter Name"
+            id="officialName"
+            style="margin-left:60px;"
+            required
+            />
+            <span class="br"></span> -->
+            <label for="email"><b>Email:</b></label>
+            <input type="email" placeholder="Enter Email" id="email" style="margin : 0px 60px;" required name="etext" value="" />
+            <input type="text" name="ki" id="somya" style="visibility:hidden;height: 0px;width:0px;"
+                value="<%= doc.name %>" />
+                        <!-- <script type=" text/javascript">
+            document.getElementById("email").value = 'dummy';
+            </script> -->
+            
+            <span class="br"></span>
+            <!-- <label for="officeDept"><b>Office/Dept:</b></label>
+                        <input
+                        type="text"
+                        placeholder="Enter Office/Dept"
+                        id="officeDept"
+                        style="margin-left:15px;"
+                        required
+                        />
+                        <span class="br"></span> -->
+            <!-- <label for="group"><b>Doc Name:</b></label>
+                        <input
+                        type="text"
+                        placeholder="Enter Name of Document"
+                        id="group"
+                        style="margin-left:25px;"
+                        required
+                        /> -->
+            
+            <span class="brmedium"></span>
+            <label for="group"><b>Access Rights:</b></label>
+            <input type="radio" id="readable" name="accesspermission" value="r" checked="checked"
+                onclick="storeRadioOutput(this.value)">
+            <label for="contactChoice1">Read</label>
+            <input type="radio" id="writable" name="accesspermission" value="w" onclick="storeRadioOutput(this.value)">
+            <label for="contactChoice2">Write</label>
+            <input type="radio" id="shareable" name="accesspermission" value="su" onclick="storeRadioOutput(this.value)">
+            <label for="contactChoice3">Super User</label>
+            <button id="add-member" type="submit">Add</button>
+            <!-- onclick="addMember()" -->
+            <button id="view-existing-groups" onclick="viewGroups()">View Groups</button>
+        </form>
+        <span class="br"></span>
+
+        <table id="share-table-new" class="sharing-material-table">
+            <thead>
+                <th style="width: auto; padding-left: 10px;">Email</th>
+                <th style="width: 30px; text-align: center;">O</th>
+                <th style="width: 30px; text-align: center;">R</th>
+                <th style="width: 30px; text-align: center;">W</th>
+                <th style="width: 30px; text-align: center;">SU</th>
+                <th style="width: 30px; text-align: center;">
+                    <img src="../public/assets/icons_word/delete.png" style="width: 20px; height: 20px" />
+                </th>
+            </thead>
+            <tbody>
+
+                <% for(var i = 0; i < _share.length; i++) { %>
+                <tr>
+                    <td><%= _share[i].user_id %></td>
+                
+                    <% if(_share[i].permission=="r"){ %>
+                    <td style="text-align: center;">
+                        </tdtext-align: center;>
+                    <td style="text-align: center;">&#x2705</tdtext-align: center;>
+                    <td style="text-align: center;"></td>
+                    <td style="text-align: center;"></td>
+                    <td style="text-align: center;"> <a id="myAnchor-<%=i%>" style="text-decoration: none;"
+                            href="/sheets/add/<%= _share[i].user_id %>/delete/<%= id %>">&#x274C</a></td>
+                    <% } %>
+                    <% if(_share[i].permission=="o"){ %>
+                    <td style="text-align: center;">&#x2705</tdtext-align: center;>
+                    <td style="text-align: center;">
+                        </tdtext-align: center;>
+                    <td style="text-align: center;"></td>
+                    <td style="text-align: center;"></td>
+                    <td style="text-align: center;"></td>
+                    <% } %>
+                
+                    <% if(_share[i].permission=="w"){ %>
+                    <td style="text-align: center;">
+                        </tdtext-align: center;>
+                    <td style="text-align: center;"></td>
+                    <td style="text-align: center;">&#x2705</tdtext-align: center;>
+                    <td style="text-align: center;"></td>
+                    <td style="text-align: center;"> <a id="myAnchor-<%=i%>" style="text-decoration: none;"
+                            href="/sheets/add/<%= _share[i].user_id %>/delete/<%= id %>">&#x274C</a></td>
+                    <% } %>
+                    <% if(_share[i].permission=="su"){ %>
+                    <td style="text-align: center;">
+                        </tdtext-align: center;>
+                    <td style="text-align: center;"></td>
+                    <td style="text-align: center;"></td>
+                    <td style="text-align: center;">&#x2705</tdtext-align: center;>
+                    <td style="text-align: center;"> <a id="myAnchor-<%=i%>" style="text-decoration: none;"
+                            href="/sheets/add/<%= _share[i].user_id %>/delete/<%= id %>">&#x274C</a></td>
+                    <% } %>
+            
+                </tr>
+                <% } %>
+                
+            </tbody>
+        
+        </table>
+
+
+    </div>
+
+    <% } %>
+    
+    <div id="footer">
+        <p>
+            <span style="position: absolute; left: 5px;">
+                &copy; 2019. ShareDocs Sheet Editor,</span>
+            <span style="position: absolute; right: 15px;">
+                Works best with Google Chrome
+            </span>
+        </p>
+    </div>
+
     <!-- <div></div> -->
     <div id="example"></div>
 
@@ -205,9 +342,15 @@
 
 
 </body>
+<% if (x==1){ %>
+<script type="text/javascript">
+    alert("<%= doc.document_name %> name already exist try another!");
+</script>
+<% } %>
 <script type="text/javascript" src="../public/js/myscripts.js"></script>
 <script>
     if (doc != undefined) {
+        document.getElementById('doc_name').innerHTML = doc.document_name;
         var arr = [];
         for (var i = 0; i < 40; ++i) {
             arr[i] = new Array(20);
@@ -228,6 +371,9 @@
         hot.render();
     }
 
+    if(y == -1){
+        hot.updateSettings({ readOnly: true }); 
+    }
 </script>
 
 

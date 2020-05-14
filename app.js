@@ -7,7 +7,6 @@ app = express(),
   io = require('socket.io')(http),
   realtimeEditor = require('realtime-editor');
 
-
 var mongoose = require("mongoose"),
   passport = require("passport"),
   bodyParser = require("body-parser"),
@@ -144,7 +143,6 @@ app.get("/drive/:id", isLoggedIn, function (req, res) {
 
                 if (doca.length == c.length) {
                   const sorteddoca = doca.slice().sort((a, b) => b.mdate - a.mdate);
-                  console.log(sorteddoca);
                   res.render("drive", {
                     user_name: req.params.id,
                     doc_: sorteddoca,
@@ -162,7 +160,6 @@ app.get("/drive/:id", isLoggedIn, function (req, res) {
                 doca.push(docs[0]);
                 if (doca.length == c.length) {
                   const sorteddoca = doca.slice().sort((a, b) => b.mdate - a.mdate);
-                  console.log(sorteddoca);
                   res.render("drive", {
                     user_name: req.params.id,
                     doc_: sorteddoca,
@@ -237,7 +234,13 @@ app.get("/drive/delete/:doc_type/:id", isLoggedIn, function (req, res) {
 
 app.get("/sheets/:id", isLoggedIn, function (req, res) {
   if(req.user.username == req.params.id){
-    res.render("sheets", { id: req.params.id, rid : req.user.username, doc : undefined}); 
+    res.render("sheets", {
+       id: req.params.id, 
+       rid : req.user.username,
+       doc : undefined,
+       x : 0,
+       y : 0
+      }); 
   } else {
     sheet.findById(req.params.id, function(err, doc){
       if(err){
@@ -245,7 +248,57 @@ app.get("/sheets/:id", isLoggedIn, function (req, res) {
         //Handle error if the given sheet is not found in database
       } else {
         var obj = JSON.stringify(doc);
-        res.render("sheets", {id : req.params.id, rid : req.user.username, doc : obj});
+        if(req.user.username == doc.created_b){ //o
+          drivemodel.find({
+            sheet_id : req.params.id
+          }, function(err, share){
+              res.render("sheets", {
+                _share: share,
+                id: req.params.id,
+                rid: req.user.username,
+                doc: obj,
+                x: 0,
+                y: 1
+              });
+          });
+        } else {
+          drivemodel.find({
+            sheet_id: req.params.id,
+            user_id: req.user.username
+          }, function(err, docs){
+            if(docs[0].permission === "r"){ // r
+              res.render("sheets", {
+                id: req.params.id,
+                rid: req.user.username,
+                doc: obj,
+                x: 0,
+                y: -1
+              });
+            } else if(docs[0].permission === "w"){  // w
+              res.render("sheets", {
+                id: req.params.id,
+                rid: req.user.username,
+                doc: obj,
+                x: 0,
+                y: 0
+              });
+            } else { 
+              drivemodel.find({ // s
+                sheet_id: req.params.id
+              }, function(err, share){
+                  res.render("sheets", {
+                    _share: share,
+                    id: req.params.id,
+                    rid: req.user.username,
+                    doc: obj,
+                    x: 0,
+                    y: 1
+                  });
+              });
+            }
+          });
+        } 
+
       }
     });
   }
@@ -273,7 +326,6 @@ app.post("/sheets/:id", isLoggedIn,  function(req, res){
     }
   }
 
-  console.log(req.params.id);
   if(req.params.id == req.user.username){
         console.log("New Sheet");
         var new_sheet = new sheet({
@@ -319,25 +371,91 @@ app.post("/sheets/:id", isLoggedIn,  function(req, res){
           }
         });
   } else {
-     // Updation with a different without socket
-     sheet.findOneAndUpdate({
-       doc_type : "sheets",
-       created_by : req.user.username,
-       _id : req.params.id
+     // Updation of data without socket
+     console.log(req.body);
+     drivemodel.findOneAndUpdate({
+       user_id: req.user.username,
+       sheet_id : req.params.id
      }, {
-       contentCells : arr,
-       name : name,
-       mdate : new Date()
-     }, function(err, doc){
-        if(err){
-          console.log(err);
-        } else {
-          console.log("SUCCESSFUL UPDATION");
-          res.send("UPDATION DONE");
-        }
-     });
+       document_name: data.save_fname
+     },
+     { 
+      upsert: true,
+      runValidators: true,
+      context: "query"
+     }, 
+    function(err, doc){
+      if(err) {
+        //Document with same name exist
+        res.render("sheets", {
+          id: req.params.id,
+          rid: req.user.username,
+          doc: obj,
+          x: 1,
+          y: 0
+        });
+
+      } else {
+        sheet.findOneAndUpdate({
+          _id: req.params.id
+        }, {
+          document_name: data.save_fname,
+          contentCells: arr,
+          name: name,
+          mdate: new Date()
+        }, function (err, doc) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("SUCCESSFUL UPDATION");
+            res.send("UPDATION DONE");
+          }
+        });
+      } 
+    });
+     
   }
 });
+
+app.post("/sheets/add/:id", isLoggedIn, function(req, res){
+  //check if user exists
+  User.find({
+    username: req.body.etext
+  }, function(err, user){
+    if(_.isEmpty(user)){
+      return res.send("username doesn't exists");
+    }
+    var new__drive = new drivemodel({
+      sheet_id: req.params.id,
+      document_name: req.body.ki,
+      permission: req.body.accesspermission,
+      user_id: req.body.etext,
+      doc_type: "sheets"
+    });
+
+    new__drive.save(function(err){
+      if(err){
+        //Handle error
+      }
+
+      return res.redirect("/sheets/" + req.params.id);
+    });
+  });
+});
+
+app.get("/sheets/add/:userd/delete/:id", isLoggedIn, function(req, res){
+
+  drivemodel.deleteOne({
+    user_id: req.params.userd,
+    sheet_id: req.params.id
+  }, function(err){
+    if(err){
+      //Handle error
+    }
+    res.redirect("/sheets/" + req.params.id);
+  })
+})
+
 
 app.get("/word/:id", isLoggedIn, function (req, res) {
   if (req.params.id == req.user.username) {
@@ -527,6 +645,7 @@ app.post("/word/:id", isLoggedIn, function (req, res) {
   // }
   else {
     //updation with different name
+    console.log(req.body);
 
     drivemodel.findOneAndUpdate({
         user_id: req.user.username,
