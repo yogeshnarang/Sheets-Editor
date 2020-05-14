@@ -46,9 +46,11 @@ var hot = new Handsontable(container, {
         startCol = c;
         endRow = r2;
         endCol = c2;
-    }
+    },
+  
 });
 num_rows = $("example").handsontable('countRows');
+
 
 // Use 2D Array of Strings to set className formatting
 // Use 2D Array of Strings to set Data in cells
@@ -127,21 +129,23 @@ document.querySelector('.align_center').addEventListener('click', function () {
 
 //Implementing the Save Functionality/button
 document.querySelector('.save').addEventListener('click', function () {
-    console.log("Save")
+    console.log("Save");
     dataSaved = hot.getData();
     hot.render();
     //To Store in Backend use JSON.stringify method on hot.getData() and hot.getCellMeta
 
+    console.log(rid);
     var obj = {};
     obj.data = dataSaved;
-    obj.save_fname = document.getElementById("doc_name").innerHTML;
+    if(!doc || doc.created_by === rid){
+        obj.save_fname = document.getElementById("doc_name").innerHTML;
+    }
+    else obj.save_fname = doc.document_name;
+
     var objS = JSON.stringify(obj);
-    console.log(objS);
-    
+
     $.post('/sheets/' + id, {data : objS}, function(data, status){
-        console.log("Hello");
-        console.log(data);
-        window.location.href = "/drive/" + rid;  
+        window.location.href = "/drive/" + rid; 
     });
 });
 
@@ -153,3 +157,19 @@ document.querySelector('.load').addEventListener('click', function () {
     data=dataSaved;
     hot.render();
 });
+
+//Sharing menu
+var counterSelectionPane = 0;
+document.querySelector('.shareButton').addEventListener('click', function(){
+    if(counterSelectionPane%2 == 0){
+        document.getElementById("share-selection-pane").style.visibility = "visible";
+    } else {
+        document.getElementById("share-selection-pane").style.visibility = "hidden";
+    }
+    counterSelectionPane = counterSelectionPane + 1;
+});
+
+function hideSelectionPane() {
+    document.getElementById("share-selection-pane").style.visibility = "hidden";
+    counterSelectionPane = counterSelectionPane + 1;
+}
